@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # === Config ===
-input_folder = r"C:\Users\anand.kumar\Documents\ruleset"
+input_folder = r"C:\Users\anand.kumar\Documents\ruleset/files"
 output_folder = "generated_rules"
 os.makedirs(output_folder, exist_ok=True)
 

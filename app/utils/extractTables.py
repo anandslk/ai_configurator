@@ -4,7 +4,7 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.styles import PatternFill, Font, Alignment, Border
 
 # === CONFIGURATION ===
-excel_path = r"C:\Users\harshitha.b\OneDrive - SLK Software Pvt Ltd\Documents\AI Configuration\KEY-GR_PM.xlsx"
+excel_path = r"C:\Users\anand.kumar\Documents\ruleset\KEY-GR_PM.xlsx"
 output_dir = "extracted_tables_with_formatting"
 os.makedirs(output_dir, exist_ok=True)
 
