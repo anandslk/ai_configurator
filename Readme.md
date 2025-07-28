@@ -1,3 +1,5 @@
+pip-compile requirements.in
+
 uvicorn app.main:app --reload
 python -m uvicorn app.main:app --reload
 python -m fastapi dev main.py

@@ -5,7 +5,8 @@ from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse
 import pandas as pd
 import shutil
-from .extractTables import extract_tables_with_formatting
+from .utils.extractTables import extract_tables_with_formatting
+from .utils.generateRules import find_header_row, generate_rules_from_sheet, clean_dataframe
 
 app = FastAPI()
 
@@ -41,101 +42,92 @@ ZIP_NAME = "generated_rules.zip"
 PREFIX = "KEY-GR"
 GROUP_NAME = "ball_disc_gate_material"
 
-# os.makedirs(INPUT_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 @app.get("/generate-rules")
-def generate_rules(excel_files_path: str = Query(..., description="Full path to Excel file"),):
-    # Clear previous outputs
+def generate_rules(excel_files_path: str = Query(..., description="Full path to directory containing Excel files")):
+    # Setup output directory
     if os.path.exists(OUTPUT_FOLDER):
         shutil.rmtree(OUTPUT_FOLDER)
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-
+    
     rule_files_created = []
-
+    processed_count = 0
+    
+    # Process each Excel file
     for excel_file in os.listdir(excel_files_path):
-        if not excel_file.lower().endswith(".xlsx"):
+        if not excel_file.lower().endswith((".xlsx", ".xls")):
             continue
-
+        
         excel_path = os.path.join(excel_files_path, excel_file)
-        input_filename = os.path.splitext(os.path.basename(excel_file))[0]
-        print(f"Processing file: {excel_file}")
-
+        input_filename = os.path.splitext(excel_file)[0]
+        print(f"\nProcessing file: {excel_file}")
+        
         try:
             xls = pd.ExcelFile(excel_path)
             sheet_names = xls.sheet_names
         except Exception as e:
             print(f"❌ Could not open {excel_file}: {e}")
             continue
-
+        
         all_rules = []
-
+        
+        # Process each sheet
         for sheet_name in sheet_names:
+            print(f"  - Sheet: {sheet_name}")
             try:
+                # Read raw data without headers
                 raw_df = pd.read_excel(xls, sheet_name=sheet_name, header=None)
-
-                # Detect header row
-                header_row_idx = None
-                for idx, row in raw_df.iterrows():
-                    non_empty_cells = row.fillna("").astype(str).str.strip()
-                    if (non_empty_cells != "").sum() >= 2:
-                        header_row_idx = idx
-                        break
-
-                if header_row_idx is None:
-                    print(f"⚠️ Header not found in {sheet_name} of {excel_file}")
+                
+                # Find best header row
+                header_row_idx = find_header_row(raw_df)
+                
+                # Read with detected header
+                df = pd.read_excel(
+                    xls, 
+                    sheet_name=sheet_name, 
+                    header=header_row_idx
+                )
+                
+                # Clean and normalize data
+                df = clean_dataframe(df)
+                
+                # Skip empty sheets
+                if df.empty:
+                    print("    ⚠️ Empty sheet, skipping")
                     continue
-
-                df = pd.read_excel(xls, sheet_name=sheet_name, header=header_row_idx)
-                df.columns = df.columns.astype(str).str.strip()
-
-                # Match column like: "Valve Size", "Drilling / Schedule", etc.
-                valve_col = next((
-                    col for col in df.columns
-                    if any(key in col.lower() for key in ["size", "valve", "drilling", "schedule"])
-                ), None)
-
-                if not valve_col:
-                    print(f"⚠️ 'Valve Size' or similar column not found in {sheet_name} of {excel_file}")
-                    continue
-
-                valve_sizes = df[valve_col].astype(str).str.strip()
-
-                for col in df.columns:
-                    if col == valve_col:
-                        continue
-
-                    col_values = df[col].astype(str).str.upper()
-                    excluded_valves = valve_sizes[col_values == "N"]
-
-                    if not excluded_valves.empty:
-                        valve_entries = ", ".join([
-                            f"'{PREFIX}'.'valve_size'.'{v.zfill(4)}'" for v in excluded_valves
-                        ])
-                        rule = f"AnyTrue({valve_entries}) Excludes AnyTrue('{PREFIX}'.'{GROUP_NAME}'.'{col}')"
-                        all_rules.append(rule)
-
+                
+                # Generate rules from this sheet
+                sheet_rules = generate_rules_from_sheet(df, sheet_name)
+                all_rules.extend(sheet_rules)
+                print(f"    ✅ Generated {len(sheet_rules)} rules")
+                
             except Exception as e:
-                print(f"⚠️ Error processing {sheet_name} in {excel_file}: {e}")
+                print(f"    ⚠️ Error processing sheet: {str(e)}")
                 continue
-
-        # Write rules
+        
+        # Save rules for this file
         if all_rules:
             output_file = os.path.join(OUTPUT_FOLDER, f"{input_filename}_rules.txt")
-            with open(output_file, "w") as f:
-                for rule in all_rules:
-                    f.write(rule + ";\n")
+            with open(output_file, "w", encoding="utf-8") as f:
+                f.write("\n".join([rule + ";" for rule in all_rules]))
             rule_files_created.append(output_file)
-            print(f"✅ Rules written to: {output_file}")
+            processed_count += 1
+            print(f"💾 Saved {len(all_rules)} rules to {output_file}")
         else:
             print(f"❌ No rules generated for {excel_file}")
-
-    # Create ZIP
+    
+    # Create ZIP archive
     if not rule_files_created:
         return {"message": "No rules generated from any file."}
-
+    
     with zipfile.ZipFile(ZIP_NAME, "w") as zipf:
         for file_path in rule_files_created:
             zipf.write(file_path, os.path.basename(file_path))
-
-    return FileResponse(ZIP_NAME, media_type="application/zip", filename=ZIP_NAME)
+    
+    return FileResponse(
+        ZIP_NAME,
+        media_type="application/zip",
+        filename=ZIP_NAME,
+        headers={"X-Files-Processed": str(processed_count)}
+    )
