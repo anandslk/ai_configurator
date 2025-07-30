@@ -1,9 +1,24 @@
+<!-- ************************************ -->
+
+python -m venv venv
+venv\Scripts\activate        # Windows
+# OR
+source venv/bin/activate     # macOS/Linux
+
+<!-- ************************************ -->
+
+pip install pip-tools
+
 pip-compile requirements.in
+pip-sync requirements.txt
+
+<!-- ************************************ -->
 
 uvicorn app.main:app --reload
 python -m uvicorn app.main:app --reload
 python -m fastapi dev main.py
 
+<!-- ************************************ -->
 
 Extract Tables
 
@@ -16,3 +31,5 @@ curl --location --request GET 'http://localhost:8000/extract?excel_path=C%3A%2FU
 Generate Ruletext
 
 curl --location 'http://localhost:8000/generate-rules?excel_files_path=C%3A%2FUsers%2Fanand.kumar%2FDocuments%2Fruleset%2Ffiles'
+
+<!-- ************************************ -->
