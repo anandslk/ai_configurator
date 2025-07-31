@@ -6,7 +6,7 @@ from fastapi.responses import FileResponse
 import pandas as pd
 import shutil
 from .utils.extractTables import extract_tables_with_formatting
-from .utils.generateRules import find_header_row, generate_rules_from_sheet, clean_dataframe
+from .utils.generateRules import find_header_row, generate_rules_from_sheet, clean_dataframe, process_sheet
 
 app = FastAPI()
 
@@ -34,15 +34,17 @@ def extract_from_path(
     for file in os.listdir(output_dir):
         os.remove(os.path.join(output_dir, file))
     os.rmdir(output_dir)
+    dataest = os.path.exists(zip_path)
 
     return FileResponse(zip_path, filename="extracted_tables.zip", media_type="application/zip")
 
+# Configuration
 OUTPUT_FOLDER = "generated_rules"
 ZIP_NAME = "generated_rules.zip"
 PREFIX = "KEY-GR"
-GROUP_NAME = "ball_disc_gate_material"
+VALVE_SIZE_GROUP = "valve_size"
 
-os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+# os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 @app.get("/generate-rules")
 def generate_rules(excel_files_path: str = Query(..., description="Full path to directory containing Excel files")):
@@ -79,26 +81,13 @@ def generate_rules(excel_files_path: str = Query(..., description="Full path to 
                 # Read raw data without headers
                 raw_df = pd.read_excel(xls, sheet_name=sheet_name, header=None)
                 
-                # Find best header row
-                header_row_idx = find_header_row(raw_df)
-                
-                # Read with detected header
-                df = pd.read_excel(
-                    xls, 
-                    sheet_name=sheet_name, 
-                    header=header_row_idx
-                )
-                
-                # Clean and normalize data
-                df = clean_dataframe(df)
-                
                 # Skip empty sheets
-                if df.empty:
+                if raw_df.empty:
                     print("    ⚠️ Empty sheet, skipping")
                     continue
                 
-                # Generate rules from this sheet
-                sheet_rules = generate_rules_from_sheet(df, sheet_name)
+                # Process sheet
+                sheet_rules = process_sheet(raw_df, sheet_name)
                 all_rules.extend(sheet_rules)
                 print(f"    ✅ Generated {len(sheet_rules)} rules")
                 
