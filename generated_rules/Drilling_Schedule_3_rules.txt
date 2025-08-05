@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["A1", "AD", "AE", "AS 2129 - Table E", "AS 2129 Table D / AS 4087 PN 16", "AS2129 - Table C/D/E", "ASME 150", "ASME 150, AS 2129 E", "ASME 150, AS 2129 E, AS 4087 PN 16", "ASME 150, PN 10/16, BS E, JIS 10", "ASME 150, PN 6/10/16", "ASME 150, PN10/16, BS E", "AWWA C207 - UNC", "B2", "BS 10 table E", "C2", "DE", "Drilling / Schedule", "J1", "J3", "JIS 10K", "JIS 5/10", "JIS 5K", "JM", "L0", "M1", "M2", "M3", "M6", "MB", "MJ", "P1", "P2", "P3", "P4", "PB", "PN 10", "PN 10 / 16", "PN 10, JIS 10K", "PN 16", "PN 20 / Cl150 Metric", "PN 6", "Special", "W0", "Y", "ZZ"]),
+  AnyTrue(end_connection: ["F0", "Y"])
+)

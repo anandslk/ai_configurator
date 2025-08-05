@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["0020", "0025", "0032", "0040", "0050", "CN", "EU", "SG", "Size", "Y"]),
+  AnyTrue(Region: ["US", "Y"])
+)

@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(Exclude "N": ["Cleaning Procedure", "Disc Options", "Feature", "Feature EXCLUDES Size", "Flange - Raised Face", "Orientation", "Special Application"]),
+  AnyTrue(: ["0020", "0025", "0032", "0040", "0050", "0065", "0080", "0100", "0125", "0150", "0200", "0250", "0300", "0350", "0400", "0450", "0500", "0600", "0700", "0750", "0800", "0900", "1000", "1050", "1100", "1200", "1350", "1400", "1500", "1600", "1650", "1800", "Added", "B27", "CLF", "Code", "FRF", "P04", "SFR", "Size", "VSH", "Y"])
+)

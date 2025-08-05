@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["CN", "EU", "MEA", "Region", "SG", "USA"]),
+  AnyTrue(nameplate_tagging: ["NP5", "Y"])
+)

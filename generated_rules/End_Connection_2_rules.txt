@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["A00", "D02", "D03", "D04", "D07", "End Connection", "F0", "L0", "N00", "S00", "S10", "U00", "V00", "W0", "Y"]),
+  AnyTrue(Disc Material: ["D01", "Y"])
+)

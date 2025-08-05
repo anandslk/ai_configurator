@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(Features: ["Disc Options", "P04", "Y"]),
+  AnyTrue(: ["B27", "CLF", "Cleaning Procedure", "End Connection", "F0", "FRF", "Flange - Raised Face", "L0", "Orientation", "SFR", "Special Application", "VSH", "W0", "Y"])
+)

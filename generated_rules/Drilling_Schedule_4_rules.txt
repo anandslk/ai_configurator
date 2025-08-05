@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(Exclude "N": ["0600", "0700", "0750", "0800", "0900", "1000", "1050", "1100", "1200", "1350", "1400", "1500", "1600", "1650", "1800", "DEFAULT drilling_schedule_thread BASED ON valve_size, mounting type AND end_connection", "GREY ALL indicates "N"", "Size", "valve_size AND end_connection IMPLIES drilling_schedule_thread"]),
+  AnyTrue(: ["A1", "AD", "AE", "AS 2129 - Table E", "AS 2129 Table D / AS 4087 PN 16", "AS2129 - Table C/D/E", "ASME 150, AS 2129 E", "ASME 150, AS 2129 E, AS 4087 PN 16", "ASME 150, PN 10/16, BS E, JIS 10", "ASME 150, PN 6/10/16", "ASME 150, PN10/16, BS E", "ASME B16.5 CL.150", "AWWA C207 - UNC", "B2", "BS 10 table E", "C2", "DE", "Drilling / Schedule", "ETO", "End Connection", "F0", "J1", "J3", "JIS 10K", "JIS 5/10", "JIS 5K", "JM", "M1", "M2", "M3", "M6", "MB", "MJ", "P1", "P2", "P3", "P4", "PB", "PN 10", "PN 10, JIS 10K", "PN 10/16", "PN 16", "PN 20 / Cl150 Metric", "PN 6", "Y"])
+)

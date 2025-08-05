@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(Feature EXCLUDES Disc Material: ["Cleaning Procedure", "Disc Options", "Exclude "N"", "Feature", "Orientation", "Special Application"]),
+  AnyTrue(: ["A00", "B27", "CLF", "Code", "D01", "D02", "D03", "D04", "D07", "Disc Material", "N00", "P04", "S00", "S10", "SFR", "U00", "V00", "VSH", "Y"])
+)

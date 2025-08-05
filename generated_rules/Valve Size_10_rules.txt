@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(Body Material: ["D5", "Ductile Iron EN-GJS-400-15", "Y"]),
+  AnyTrue(: ["0020,0025,0032,0040", "CQ", "Carbon steel A216 WCB / EN 1.0619", "D1", "D2", "D3", "Ductile Iron A395 60-40-18", "Ductile Iron A395 60-40-18 / EN 5.3103 (JS1049)", "Ductile Iron A536 65-45-12 / EN 5.3106 (JS1030)", "NOT(0020,0025,0032,0040)", "SQ", "Size", "Stainless steel A351 CF8M / EN 1.4408", "Y"])
+)

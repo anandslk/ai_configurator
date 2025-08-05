@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["0700", "0750", "0800", "0900", "L0, W0", "SQ", "Size", "end_connection"]),
+  AnyTrue(body_material: ["CQ"])
+)

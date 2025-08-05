@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["B27", "CLF", "Cleaning Procedure", "Code", "Disc Options", "E05", "E5", "E6", "EA", "F0", "Feature", "H1", "N0", "N8", "N9", "Orientation", "P0", "P04", "SFR", "Special Application", "VSH", "Y"]),
+  AnyTrue(Seat Material(s): ["E0", "Y"])
+)

@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["CQ", "D2", "D3", "End Connection", "F0", "L0", "SQ", "W0", "Y"]),
+  AnyTrue(Body Material: ["D1", "Y"])
+)

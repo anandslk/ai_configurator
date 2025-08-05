@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["End Connection", "F0", "L0", "M1", "S2", "U0", "V0", "W0", "Y"]),
+  AnyTrue(Stem Material: ["S0", "Y"])
+)

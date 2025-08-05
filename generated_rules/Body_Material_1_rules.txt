@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["0800, 0900", "D3", "F0", "I", "K", "L0, W0", "Upto 0750", "Y", "end_connection", "operator_mounting_type", "valve_size"]),
+  AnyTrue(body_material: ["D2", "Y"])
+)

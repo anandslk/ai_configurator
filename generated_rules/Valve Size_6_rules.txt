@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(Operator Mounting Type: ["I"]),
+  AnyTrue(: ["K"])
+)

@@ -1,0 +1,4 @@
+AllTrue(
+  AnyTrue(: ["A00", "D01", "D02", "D03", "D04", "D07", "Disc Material", "E5", "E6", "EA", "F0", "H1", "N0", "N00", "N8", "N9", "P0", "S00", "S10", "U00", "V00", "Y"]),
+  AnyTrue(Seat Material: ["E0", "Y"])
+)
